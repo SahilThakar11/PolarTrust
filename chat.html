@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polar Trust - Support Chat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/global.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "var(--color-primary)",
+              danger: "var(--color-danger)",
+              success: "var(--color-success)",
+              muted: "var(--color-text-muted)",
+              dark: "var(--color-text-main)",
+              bg: "var(--color-bg-light)",
+              tertiary: "var(--color-tertiary)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Chat Bubble Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .msg-animate {
+        animation: fadeIn 0.3s ease-out forwards;
+      }
+    </style>
+  </head>
+  <body
+    class="h-screen overflow-hidden flex flex-row text-sm text-slate-600 bg-gray-50"
+  >
+    <div
+      id="mobile-overlay"
+      onclick="toggleMenu()"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden glass transition-opacity"
+    ></div>
+
+    <aside
+      id="sidebar"
+      class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between fixed md:relative z-50 h-full transition-transform duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none shrink-0"
+    >
+      <button
+        onclick="toggleMenu()"
+        class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
+      >
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <div class="p-8">
+        <div class="flex items-center gap-3 mb-12">
+          <div class="w-full max-w-[180px]">
+            <div class="flex items-center gap-2 text-primary font-bold text-xl">
+              <img src="assets/logo.png" alt="Logo" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="space-y-4">
+          <a
+            href="index.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-house w-5"></i>
+            <span class="font-medium">Dashboard</span>
+          </a>
+          <a
+            href="transactions.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-right-left w-5"></i>
+            <span class="font-medium">Transactions</span>
+          </a>
+          <a
+            href="investments.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-chart-line w-5"></i>
+            <span class="font-medium">Investments</span>
+          </a>
+          <a
+            href="transferfunds.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-regular fa-paper-plane w-5"></i>
+            <span class="font-medium">Transfer Funds</span>
+          </a>
+          <a
+            href="#"
+            class="flex items-center gap-4 px-4 py-3 bg-primary text-white shadow-md shadow-blue-200 rounded-xl"
+          >
+            <i class="fa-regular fa-comment-dots w-5"></i>
+            <span class="font-medium">Support Chat</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-8">
+        <button
+          class="w-full bg-danger text-white py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 transition shadow-lg shadow-red-100"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="font-medium">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <main
+      class="flex-1 flex flex-col h-full overflow-hidden relative w-full min-w-0 bg-white md:bg-gray-50"
+    >
+      <header
+        class="h-20 md:h-24 flex items-center justify-between px-4 md:px-10 py-6 shrink-0 bg-transparent w-full"
+      >
+        <div class="flex items-center gap-4 shrink-0">
+          <button
+            onclick="toggleMenu()"
+            class="md:hidden text-dark text-xl p-2"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <h1
+              class="text-xl md:text-2xl font-bold text-dark whitespace-nowrap"
+            >
+              Polar Assistant
+            </h1>
+            <div
+              class="flex items-center gap-2 text-xs text-success font-medium"
+            >
+              <span class="w-2 h-2 rounded-full bg-success"></span>
+              Online
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div
+        class="flex-1 overflow-y-auto px-4 md:px-10 pb-4"
+        id="chat-container"
+      >
+        <div class="flex flex-col gap-6 py-4">
+          <div class="flex justify-center">
+            <span class="text-xs text-muted bg-gray-200 px-3 py-1 rounded-full"
+              >Today, 9:41 AM</span
+            >
+          </div>
+
+          <div class="flex gap-4 max-w-[85%] md:max-w-[70%] msg-animate">
+            <div
+              class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-md"
+            >
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="space-y-1">
+              <div
+                class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm text-dark border border-gray-100"
+              >
+                <p>Hello Thomas! 👋 I'm your Polar Virtual Assistant.</p>
+                <p class="mt-2">How can I help you with your banking today?</p>
+              </div>
+              <span class="text-xs text-muted ml-2">9:41 AM</span>
+            </div>
+          </div>
+
+          <div
+            class="flex gap-2 ml-14 flex-wrap msg-animate"
+            style="animation-delay: 0.1s"
+          >
+            <button
+              class="px-4 py-2 bg-white border border-primary text-primary rounded-full text-xs font-medium hover:bg-blue-50 transition"
+            >
+              Check Balance
+            </button>
+            <button
+              class="px-4 py-2 bg-white border border-primary text-primary rounded-full text-xs font-medium hover:bg-blue-50 transition"
+            >
+              Transfer Funds
+            </button>
+            <button
+              class="px-4 py-2 bg-white border border-primary text-primary rounded-full text-xs font-medium hover:bg-blue-50 transition"
+            >
+              Report Fraud
+            </button>
+          </div>
+
+          <div
+            class="flex gap-4 max-w-[85%] md:max-w-[70%] self-end flex-row-reverse msg-animate"
+            style="animation-delay: 0.3s"
+          >
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-gray-200"
+            >
+              <img
+                src="https://i.pravatar.cc/150?u=9999"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="space-y-1">
+              <div
+                class="bg-primary p-4 rounded-2xl rounded-tr-none shadow-md text-white"
+              >
+                <p>
+                  I see a transaction I don't recognize from "Tim Hortons". Can
+                  you check details?
+                </p>
+              </div>
+              <span class="text-xs text-muted mr-2 text-right block"
+                >9:43 AM</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="flex gap-4 max-w-[85%] md:max-w-[70%] msg-animate"
+            style="animation-delay: 0.8s"
+          >
+            <div
+              class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-md"
+            >
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="space-y-1">
+              <div
+                class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm text-dark border border-gray-100"
+              >
+                <p>
+                  I found a transaction for <strong>$17.79</strong> at Tim
+                  Hortons (Kitchener, ON) on <strong>Nov 24, 2025</strong>.
+                </p>
+
+                <div
+                  class="mt-3 bg-gray-50 p-3 rounded-xl border border-gray-200 flex items-center justify-between"
+                >
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-muted border border-gray-200"
+                    >
+                      <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <div>
+                      <p class="font-bold text-xs">Tim Hortons</p>
+                      <p class="text-[10px] text-muted">Debit Card • **86</p>
+                    </div>
+                  </div>
+                  <span class="font-bold text-dark text-xs">-$17.79</span>
+                </div>
+              </div>
+              <span class="text-xs text-muted ml-2">9:44 AM</span>
+            </div>
+          </div>
+
+          <div
+            class="flex gap-4 max-w-[85%] md:max-w-[70%] self-end flex-row-reverse msg-animate"
+            style="animation-delay: 1.2s"
+          >
+            <div
+              class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-gray-200"
+            >
+              <img
+                src="https://i.pravatar.cc/150?u=9999"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="space-y-1">
+              <div
+                class="bg-primary p-4 rounded-2xl rounded-tr-none shadow-md text-white"
+              >
+                <p>Thanks. I also want to ask about refinancing my mortgage.</p>
+              </div>
+              <span class="text-xs text-muted mr-2 text-right block"
+                >9:45 AM</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="flex gap-4 max-w-[85%] md:max-w-[70%] msg-animate"
+            style="animation-delay: 1.5s"
+          >
+            <div
+              class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-md"
+            >
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="space-y-1">
+              <div
+                class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm text-dark border border-gray-100"
+              >
+                <p>
+                  I can help with general information, but mortgage refinancing
+                  requires a specialist to review your specific account details.
+                </p>
+
+                <div
+                  class="mt-4 bg-blue-50 border border-blue-100 p-3 md:p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                >
+                  <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div
+                      class="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0"
+                      aria-hidden="true"
+                    >
+                      <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div class="min-w-0">
+                      <p
+                        class="font-bold text-dark text-sm sm:text-xs truncate"
+                      >
+                        Connect with Agent
+                      </p>
+                      <p
+                        class="text-[11px] text-muted flex items-center gap-2 mt-1 sm:mt-0"
+                      >
+                        <span
+                          class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"
+                        ></span>
+                        <span class="truncate">Wait time: &lt; 2 min</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="bg-primary text-white px-4 py-2 rounded-lg text-sm sm:text-xs font-bold hover:bg-blue-600 transition shadow-sm whitespace-nowrap w-full sm:w-auto text-center"
+                    aria-label="Start chat with agent"
+                  >
+                    Start Chat
+                  </button>
+                </div>
+              </div>
+              <span class="text-xs text-muted ml-2">9:45 AM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 md:p-6 bg-white border-t border-gray-100 shrink-0">
+        <div class="max-w-4xl mx-auto relative">
+          <input
+            type="text"
+            placeholder="Type your message here..."
+            class="w-full bg-gray-50 border border-gray-200 rounded-full py-4 pl-6 pr-32 focus:outline-none focus:border-primary focus:ring-2 focus:ring-blue-50 transition"
+          />
+
+          <div class="absolute right-2 top-2 bottom-2 flex items-center gap-2">
+            <button
+              class="w-10 h-10 flex items-center justify-center text-muted hover:text-primary transition rounded-full hover:bg-gray-100"
+            >
+              <i class="fa-solid fa-paperclip"></i>
+            </button>
+            <button
+              class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-full hover:bg-blue-600 transition shadow-md shadow-blue-200"
+            >
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside
+      class="w-80 bg-white border-l border-gray-100 flex flex-col hidden xl:flex shrink-0 z-10"
+    >
+      <div class="p-6 border-b border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-dark text-lg">History</h3>
+          <button
+            class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-primary hover:bg-blue-50 transition"
+          >
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+        </div>
+
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Search chats..."
+            class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-primary"
+          />
+          <i
+            class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"
+          ></i>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-4 space-y-2">
+        <p
+          class="text-xs font-bold text-muted px-2 mb-2 uppercase tracking-wider"
+        >
+          Today
+        </p>
+
+        <div
+          class="p-3 bg-blue-50 border border-blue-100 rounded-xl cursor-pointer group"
+        >
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-bold text-primary text-xs">
+              Unrecognized Transaction
+            </h4>
+            <span class="text-[10px] text-blue-400">Now</span>
+          </div>
+          <p class="text-xs text-slate-500 line-clamp-2">
+            I see a transaction I don't recognize from "Tim Hortons"...
+          </p>
+        </div>
+
+        <p
+          class="text-xs font-bold text-muted px-2 mt-6 mb-2 uppercase tracking-wider"
+        >
+          Yesterday
+        </p>
+
+        <div
+          class="p-3 bg-white border border-transparent hover:bg-gray-50 hover:border-gray-100 rounded-xl cursor-pointer transition"
+        >
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-bold text-dark text-xs">Reset Password</h4>
+            <span class="text-[10px] text-muted">2:30 PM</span>
+          </div>
+          <p class="text-xs text-muted line-clamp-2">
+            How do I change my online banking password?
+          </p>
+        </div>
+
+        <div
+          class="p-3 bg-white border border-transparent hover:bg-gray-50 hover:border-gray-100 rounded-xl cursor-pointer transition"
+        >
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-bold text-dark text-xs">E-Transfer Limit</h4>
+            <span class="text-[10px] text-muted">10:15 AM</span>
+          </div>
+          <p class="text-xs text-muted line-clamp-2">
+            What is my daily limit for sending transfers?
+          </p>
+        </div>
+
+        <p
+          class="text-xs font-bold text-muted px-2 mt-6 mb-2 uppercase tracking-wider"
+        >
+          Previous 7 Days
+        </p>
+
+        <div
+          class="p-3 bg-white border border-transparent hover:bg-gray-50 hover:border-gray-100 rounded-xl cursor-pointer transition"
+        >
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-bold text-dark text-xs">Travel Notice</h4>
+            <span class="text-[10px] text-muted">Nov 20</span>
+          </div>
+          <p class="text-xs text-muted line-clamp-2">
+            I am going to Europe next week, do I need to...
+          </p>
+        </div>
+
+        <div
+          class="p-3 bg-white border border-transparent hover:bg-gray-50 hover:border-gray-100 rounded-xl cursor-pointer transition"
+        >
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-bold text-dark text-xs">New Account</h4>
+            <span class="text-[10px] text-muted">Nov 18</span>
+          </div>
+          <p class="text-xs text-muted line-clamp-2">
+            I want to open a US Dollar savings account.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-gray-100 bg-gray-50">
+        <button
+          class="w-full py-2 bg-white border border-gray-200 text-dark font-semibold text-xs rounded-lg hover:bg-gray-100 transition shadow-sm"
+        >
+          View All History
+        </button>
+      </div>
+    </aside>
+
+    <script>
+      function toggleMenu() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("mobile-overlay");
+
+        if (sidebar.classList.contains("-translate-x-full")) {
+          sidebar.classList.remove("-translate-x-full");
+          overlay.classList.remove("hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          overlay.classList.add("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>
