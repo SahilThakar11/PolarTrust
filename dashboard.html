@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polar Trust - Dashboard</title>
+    <link rel="icon" href="assets/favicon.ico" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="styles/global.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "var(--color-primary)",
+              danger: "var(--color-danger)",
+              success: "var(--color-success)",
+              muted: "var(--color-text-muted)",
+              dark: "var(--color-text-main)",
+              bg: "var(--color-bg-light)",
+              tertiary: "var(--color-tertiary)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .chart-grid {
+        background-image: linear-gradient(to top, #f3f4f6 1px, transparent 1px);
+        background-size: 100% 20%;
+      }
+    </style>
+  </head>
+  <body
+    class="h-screen overflow-hidden flex flex-row text-sm text-slate-600 bg-gray-50"
+  >
+    <div
+      id="mobile-overlay"
+      onclick="toggleMenu()"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden glass transition-opacity"
+    ></div>
+
+    <aside
+      id="sidebar"
+      class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between fixed md:relative z-50 h-full transition-transform duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none shrink-0"
+    >
+      <button
+        onclick="toggleMenu()"
+        class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
+      >
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <div class="p-8">
+        <div class="flex items-center gap-3 mb-12">
+          <div class="w-full max-w-[180px]">
+            <div class="flex items-center gap-2 text-primary font-bold text-xl">
+              <img src="assets/logo.png" alt="Logo" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="space-y-4">
+          <a
+            href="#"
+            class="flex items-center gap-4 px-4 py-3 bg-primary text-white shadow-md shadow-blue-200 rounded-xl"
+          >
+            <i class="fa-solid fa-house w-5"></i>
+            <span class="font-medium">Dashboard</span>
+          </a>
+          <a
+            href="transactions.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-right-left w-5"></i>
+            <span class="font-medium">Transactions</span>
+          </a>
+          <a
+            href="investments.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-chart-line w-5"></i>
+            <span class="font-medium">Investments</span>
+          </a>
+          <a
+            href="transferfunds.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-regular fa-paper-plane w-5"></i>
+            <span class="font-medium">Transfer Funds</span>
+          </a>
+          <a
+            href="chat.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-regular fa-comment-dots w-5"></i>
+            <span class="font-medium">Support Chat</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-8">
+        <button
+          class="w-full bg-danger text-white py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 transition shadow-lg shadow-red-100"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="font-medium">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <main
+      class="flex-1 flex flex-col h-full overflow-hidden relative w-full min-w-0"
+    >
+      <header
+        class="h-16 md:h-20 flex items-center justify-between px-4 md:px-8 py-4 shrink-0 bg-white/50 backdrop-blur-md sticky top-0 z-10 border-b border-gray-100"
+      >
+        <div class="flex items-center gap-4 shrink-0">
+          <button
+            onclick="toggleMenu()"
+            class="md:hidden text-dark text-xl p-2"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <h1 class="text-xl font-bold text-dark">Welcome back, Thomas</h1>
+            <p class="text-xs text-muted">
+              Here's what's happening with your accounts today.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="flex items-center justify-end gap-3 md:gap-4 flex-1 min-w-0"
+        >
+          <div class="hidden sm:flex relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              class="bg-white border border-gray-200 rounded-full py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-primary w-48"
+            />
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"
+            ></i>
+          </div>
+
+          <button
+            class="w-9 h-9 bg-white rounded-full border border-gray-200 text-muted hover:text-primary flex items-center justify-center relative"
+          >
+            <i class="fa-regular fa-bell"></i>
+            <span
+              class="absolute top-2 right-2.5 w-1.5 h-1.5 bg-danger rounded-full border border-white"
+            ></span>
+          </button>
+          <div
+            class="w-9 h-9 rounded-full overflow-hidden border border-gray-200 shrink-0"
+          >
+            <img
+              src="https://i.pravatar.cc/150?u=9999"
+              alt="Profile"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+          <div
+            class="bg-gradient-to-br from-gray-900 to-gray-800 p-5 rounded-[20px] text-white shadow-lg relative overflow-hidden group hover:-translate-y-1 transition duration-300"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div class="bg-white/10 p-2 rounded-lg">
+                <i class="fa-solid fa-wallet"></i>
+              </div>
+              <span class="text-xs font-mono opacity-60">**** 8812</span>
+            </div>
+            <div>
+              <p class="text-gray-400 text-xs font-medium">Chequing</p>
+              <h4 class="text-2xl font-bold">$44,304.41</h4>
+            </div>
+            <div
+              class="absolute -right-5 -bottom-5 w-24 h-24 bg-white opacity-5 rounded-full blur-xl"
+            ></div>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-blue-600 to-blue-500 p-5 rounded-[20px] text-white shadow-lg relative overflow-hidden group hover:-translate-y-1 transition duration-300"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div class="bg-white/20 p-2 rounded-lg">
+                <i class="fa-solid fa-piggy-bank"></i>
+              </div>
+              <span class="text-xs font-mono opacity-60">**** 4432</span>
+            </div>
+            <div>
+              <p class="text-blue-100 text-xs font-medium">Savings</p>
+              <h4 class="text-2xl font-bold">$7,800.20</h4>
+            </div>
+            <div
+              class="absolute -right-5 -bottom-5 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"
+            ></div>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-[20px] border border-gray-200 shadow-sm relative overflow-hidden group hover:-translate-y-1 transition duration-300"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div class="bg-blue-50 text-primary p-2 rounded-lg">
+                <i class="fa-brands fa-cc-visa text-lg"></i>
+              </div>
+              <span class="text-xs font-mono text-muted">**** 1289</span>
+            </div>
+            <div>
+              <p class="text-muted text-xs font-medium">Visa Infinite</p>
+              <h4 class="text-2xl font-bold text-dark">$2,300.00</h4>
+            </div>
+            <div
+              class="mt-3 w-full bg-gray-100 h-1.5 rounded-full overflow-hidden"
+            >
+              <div
+                class="bg-primary h-full rounded-full"
+                style="width: 23%"
+              ></div>
+            </div>
+            <p class="text-[10px] text-muted mt-1 text-right">23% Used</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div
+            class="lg:col-span-2 bg-white p-6 rounded-[24px] shadow-sm border border-gray-100"
+          >
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h3 class="font-bold text-dark">Cash Flow</h3>
+                <p class="text-xs text-muted">
+                  Income vs Expenses (Last 6 Months)
+                </p>
+              </div>
+              <div class="flex gap-3 text-xs">
+                <div class="flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-primary"></span> Income
+                </div>
+                <div class="flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-gray-300"></span> Expense
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="h-48 w-full chart-grid relative flex items-end justify-between px-2 gap-4"
+            >
+              <div
+                class="flex flex-col items-center gap-2 flex-1 h-full justify-end group"
+              >
+                <div
+                  class="relative w-full flex justify-center items-end gap-1 h-full"
+                >
+                  <div class="w-2.5 bg-gray-300 rounded-t-sm h-[40%]"></div>
+                  <div class="w-2.5 bg-primary rounded-t-sm h-[50%]"></div>
+                </div>
+                <span class="text-[10px] text-muted">Jun</span>
+              </div>
+              <div
+                class="flex flex-col items-center gap-2 flex-1 h-full justify-end group"
+              >
+                <div
+                  class="relative w-full flex justify-center items-end gap-1 h-full"
+                >
+                  <div class="w-2.5 bg-gray-300 rounded-t-sm h-[60%]"></div>
+                  <div class="w-2.5 bg-primary rounded-t-sm h-[55%]"></div>
+                </div>
+                <span class="text-[10px] text-muted">Jul</span>
+              </div>
+              <div
+                class="flex flex-col items-center gap-2 flex-1 h-full justify-end group"
+              >
+                <div
+                  class="relative w-full flex justify-center items-end gap-1 h-full"
+                >
+                  <div class="w-2.5 bg-gray-300 rounded-t-sm h-[30%]"></div>
+                  <div class="w-2.5 bg-primary rounded-t-sm h-[70%]"></div>
+                </div>
+                <span class="text-[10px] text-muted">Aug</span>
+              </div>
+              <div
+                class="flex flex-col items-center gap-2 flex-1 h-full justify-end group"
+              >
+                <div
+                  class="relative w-full flex justify-center items-end gap-1 h-full"
+                >
+                  <div class="w-2.5 bg-gray-300 rounded-t-sm h-[80%]"></div>
+                  <div class="w-2.5 bg-primary rounded-t-sm h-[60%]"></div>
+                </div>
+                <span class="text-[10px] text-muted">Sep</span>
+              </div>
+              <div
+                class="flex flex-col items-center gap-2 flex-1 h-full justify-end group"
+              >
+                <div
+                  class="relative w-full flex justify-center items-end gap-1 h-full"
+                >
+                  <div class="w-2.5 bg-gray-300 rounded-t-sm h-[45%]"></div>
+                  <div class="w-2.5 bg-primary rounded-t-sm h-[85%]"></div>
+                </div>
+                <span class="text-[10px] text-muted">Oct</span>
+              </div>
+              <div
+                class="flex flex-col items-center gap-2 flex-1 h-full justify-end group"
+              >
+                <div
+                  class="relative w-full flex justify-center items-end gap-1 h-full"
+                >
+                  <div class="w-2.5 bg-gray-300 rounded-t-sm h-[35%]"></div>
+                  <div class="w-2.5 bg-primary rounded-t-sm h-[90%]"></div>
+                </div>
+                <span class="text-[10px] font-bold text-dark">Nov</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white p-6 rounded-[24px] shadow-sm border border-gray-100 flex flex-col justify-between"
+          >
+            <h3 class="font-bold text-dark mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-blue-50 text-primary hover:bg-blue-100 transition"
+              >
+                <i class="fa-solid fa-money-bill-transfer text-lg"></i>
+                <span class="text-xs font-bold">Transfer</span>
+              </button>
+              <button
+                class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-gray-50 text-dark hover:bg-gray-100 transition"
+              >
+                <i class="fa-solid fa-file-invoice-dollar text-lg"></i>
+                <span class="text-xs font-bold">Pay Bill</span>
+              </button>
+              <button
+                class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-gray-50 text-dark hover:bg-gray-100 transition"
+              >
+                <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+                <span class="text-xs font-bold">Deposit</span>
+              </button>
+              <button
+                class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-gray-50 text-dark hover:bg-gray-100 transition"
+              >
+                <i class="fa-solid fa-ellipsis text-lg"></i>
+                <span class="text-xs font-bold">More</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 xl:hidden">
+          <div
+            class="bg-white p-6 rounded-[24px] shadow-sm border border-gray-100"
+          >
+            <h3 class="font-bold text-dark mb-4">Upcoming & Scheduled</h3>
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-lg bg-red-50 text-danger flex items-center justify-center"
+                >
+                  <i class="fa-brands fa-spotify"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs font-bold text-dark">Spotify</p>
+                  <p class="text-[10px] text-red-400 font-medium">
+                    Due Tomorrow
+                  </p>
+                </div>
+                <span class="text-xs font-bold text-dark">$10.99</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-house"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs font-bold text-dark">Rent Transfer</p>
+                  <p class="text-[10px] text-muted">Dec 01</p>
+                </div>
+                <span class="text-xs font-bold text-dark">$1,200</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white p-6 rounded-[24px] shadow-sm border border-gray-100"
+          >
+            <h3 class="font-bold text-dark mb-4">Budget Limits</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="font-bold text-dark">Food & Drink</span>
+                  <span class="text-muted">75%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full">
+                  <div
+                    class="bg-orange-400 h-1.5 rounded-full"
+                    style="width: 75%"
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="font-bold text-dark">Transport</span>
+                  <span class="text-muted">60%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full">
+                  <div
+                    class="bg-blue-400 h-1.5 rounded-full"
+                    style="width: 60%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-[24px] p-6 shadow-sm border border-gray-100"
+        >
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="font-bold text-dark">Recent Transactions</h3>
+            <a
+              href="transactions.html"
+              class="text-primary text-xs font-bold hover:underline"
+              >View All</a
+            >
+          </div>
+
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="text-xs text-muted border-b border-gray-50">
+                <th class="pb-3 font-medium pl-2">Transaction</th>
+                <th class="pb-3 font-medium hidden sm:table-cell">Category</th>
+                <th class="pb-3 font-medium hidden md:table-cell">Date</th>
+                <th class="pb-3 font-medium text-right pr-2">Amount</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="group hover:bg-gray-50 transition">
+                <td class="py-4 pl-2 flex items-center gap-3">
+                  <div
+                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-dark group-hover:bg-white group-hover:shadow-sm"
+                  >
+                    <i class="fa-brands fa-uber"></i>
+                  </div>
+                  <span class="font-bold text-dark">Uber Trip</span>
+                </td>
+                <td class="py-4 text-muted text-xs hidden sm:table-cell">
+                  Transport
+                </td>
+                <td class="py-4 text-muted text-xs hidden md:table-cell">
+                  Nov 27, 2025
+                </td>
+                <td class="py-4 text-right font-bold text-dark pr-2">
+                  -$14.50
+                </td>
+              </tr>
+              <tr class="group hover:bg-gray-50 transition">
+                <td class="py-4 pl-2 flex items-center gap-3">
+                  <div
+                    class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-primary group-hover:bg-white group-hover:shadow-sm"
+                  >
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <span class="font-bold text-dark">Payroll Deposit</span>
+                </td>
+                <td class="py-4 text-muted text-xs hidden sm:table-cell">
+                  Income
+                </td>
+                <td class="py-4 text-muted text-xs hidden md:table-cell">
+                  Nov 24, 2025
+                </td>
+                <td class="py-4 text-right font-bold text-success pr-2">
+                  +$3,400.00
+                </td>
+              </tr>
+              <tr class="group hover:bg-gray-50 transition">
+                <td class="py-4 pl-2 flex items-center gap-3">
+                  <div
+                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-dark group-hover:bg-white group-hover:shadow-sm"
+                  >
+                    <i class="fa-solid fa-mug-hot"></i>
+                  </div>
+                  <span class="font-bold text-dark">Tim Hortons</span>
+                </td>
+                <td class="py-4 text-muted text-xs hidden sm:table-cell">
+                  Food & Drink
+                </td>
+                <td class="py-4 text-muted text-xs hidden md:table-cell">
+                  Nov 24, 2025
+                </td>
+                <td class="py-4 text-right font-bold text-dark pr-2">-$2.45</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <aside
+      class="w-80 bg-white border-l border-gray-100 hidden xl:flex flex-col shrink-0 z-10 overflow-y-auto"
+    >
+      <div class="p-6 border-b border-gray-100">
+        <h3 class="font-bold text-dark mb-4">Scheduled Transfers</h3>
+        <div class="space-y-3">
+          <div
+            class="p-3 rounded-xl border border-gray-100 flex items-center justify-between hover:shadow-sm transition cursor-pointer"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs"
+              >
+                <i class="fa-solid fa-house"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-dark">Rent</p>
+                <p class="text-[10px] text-muted">Dec 01</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold text-dark">$1,200</span>
+          </div>
+          <div
+            class="p-3 rounded-xl border border-gray-100 flex items-center justify-between hover:shadow-sm transition cursor-pointer"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded-lg bg-green-50 text-success flex items-center justify-center text-xs"
+              >
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-dark">Savings</p>
+                <p class="text-[10px] text-muted">Dec 01</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold text-dark">$500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 border-b border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-dark">Upcoming Bills</h3>
+          <span class="text-[10px] text-tertiary cursor-pointer hover:underline"
+            >See all</span
+          >
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-red-50 text-danger flex items-center justify-center"
+            >
+              <i class="fa-brands fa-spotify"></i>
+            </div>
+            <div class="flex-1">
+              <p class="text-xs font-bold text-dark">Spotify</p>
+              <p class="text-[10px] text-red-400 font-medium">Due Tomorrow</p>
+            </div>
+            <span class="text-xs font-bold text-dark">$10.99</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-blue-50 text-primary flex items-center justify-center"
+            >
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div class="flex-1">
+              <p class="text-xs font-bold text-dark">Hydro</p>
+              <p class="text-[10px] text-muted">Due in 5 days</p>
+            </div>
+            <span class="text-xs font-bold text-dark">$124.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 flex-1">
+        <h3 class="font-bold text-dark mb-4">Budget Limits</h3>
+        <div class="space-y-5">
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="font-bold text-dark">Food & Drink</span
+              ><span class="text-muted">75%</span>
+            </div>
+            <div class="w-full bg-gray-100 h-1.5 rounded-full">
+              <div
+                class="bg-orange-400 h-1.5 rounded-full"
+                style="width: 75%"
+              ></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="font-bold text-dark">Transport</span
+              ><span class="text-muted">60%</span>
+            </div>
+            <div class="w-full bg-gray-100 h-1.5 rounded-full">
+              <div
+                class="bg-blue-400 h-1.5 rounded-full"
+                style="width: 60%"
+              ></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="font-bold text-dark">Shopping</span
+              ><span class="text-muted">93%</span>
+            </div>
+            <div class="w-full bg-gray-100 h-1.5 rounded-full">
+              <div
+                class="bg-red-400 h-1.5 rounded-full"
+                style="width: 93%"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="mt-8 bg-tertiary rounded-xl p-4 text-white text-center relative overflow-hidden group cursor-pointer"
+        >
+          <div class="relative z-10">
+            <p class="text-xs font-bold mb-1 opacity-90">Refer a friend</p>
+            <p class="text-lg font-bold mb-2">$50 Bonus</p>
+            <button
+              class="text-[10px] bg-white text-tertiary px-3 py-1.5 rounded-lg font-bold"
+            >
+              Invite Now
+            </button>
+          </div>
+          <div
+            class="absolute -right-4 -bottom-4 text-6xl opacity-20 rotate-12 group-hover:scale-110 transition"
+          >
+            <i class="fa-solid fa-gift"></i>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <script>
+      function toggleMenu() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("mobile-overlay");
+
+        if (sidebar.classList.contains("-translate-x-full")) {
+          sidebar.classList.remove("-translate-x-full");
+          overlay.classList.remove("hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          overlay.classList.add("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>
