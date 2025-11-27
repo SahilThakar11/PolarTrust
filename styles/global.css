@@ -1,0 +1,39 @@
+/* global.css */
+:root {
+  --color-primary: #3880df;
+  --color-secondary: #ffe9de;
+  --color-secondary-text: #e2804c;
+  --color-danger: #ef4444;
+  --color-success: #10b981;
+  --color-text-main: #4b4b4b;
+  --color-text-muted: #848a93;
+  --color-bg-light: #f3f4f6;
+  --color-card-bg: #ffffff;
+  --color-tertiary: #0597a2;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  font-family: "Inter", sans-serif;
+}
+
+/* Custom Scrollbar for a cleaner look */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Custom checkbox override to match the teal color in the sidebar */
+.custom-checkbox:checked {
+  background-color: #2f80ed;
+  border-color: #2f80ed;
+}

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polar Trust - Transaction History</title>
+    <link rel="icon" href="assets/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/global.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "var(--color-primary)",
+              danger: "var(--color-danger)",
+              success: "var(--color-success)",
+              muted: "var(--color-text-muted)",
+              dark: "var(--color-text-main)",
+              bg: "var(--color-bg-light)",
+              tertiary: "var(--color-tertiary)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="h-screen overflow-hidden flex flex-row text-sm text-slate-600 bg-gray-50"
+  >
+    <div
+      id="mobile-overlay"
+      onclick="toggleMenu()"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden glass transition-opacity"
+    ></div>
+
+    <aside
+      id="sidebar"
+      class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between fixed md:relative z-50 h-full transition-transform duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none shrink-0"
+    >
+      <button
+        onclick="toggleMenu()"
+        class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
+      >
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <div class="p-8">
+        <div class="flex items-center gap-3 mb-12">
+          <div class="w-full max-w-[180px]">
+            <div class="flex items-center gap-2 text-primary font-bold text-xl">
+              <img src="assets/logo.png" alt="Logo" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="space-y-4">
+          <a
+            href="#"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-house w-5"></i>
+            <span class="font-medium">Dashboard</span>
+          </a>
+          <a
+            href="#"
+            class="flex items-center gap-4 px-4 py-3 bg-primary text-white shadow-md shadow-blue-200 rounded-xl"
+          >
+            <i class="fa-solid fa-right-left w-5"></i>
+            <span class="font-medium">Transactions</span>
+          </a>
+          <a
+            href="/investment.html"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-solid fa-chart-line w-5"></i>
+            <span class="font-medium">Investments</span>
+          </a>
+          <a
+            href="#"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-regular fa-paper-plane w-5"></i>
+            <span class="font-medium">Transfer Funds</span>
+          </a>
+          <a
+            href="#"
+            class="flex items-center gap-4 px-4 py-3 text-muted hover:text-primary transition-colors rounded-xl"
+          >
+            <i class="fa-regular fa-comment-dots w-5"></i>
+            <span class="font-medium">Support Chat</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-8">
+        <button
+          class="w-full bg-danger text-white py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 transition shadow-lg shadow-red-100"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="font-medium">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <main
+      class="flex-1 flex flex-col h-full overflow-hidden relative w-full min-w-0"
+    >
+      <header
+        class="h-20 md:h-24 flex items-center justify-between px-4 md:px-10 py-6 shrink-0 bg-transparent w-full"
+      >
+        <div class="flex items-center gap-4 shrink-0">
+          <button
+            onclick="toggleMenu()"
+            class="md:hidden text-dark text-xl p-2"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h1 class="text-xl md:text-2xl font-bold text-dark whitespace-nowrap">
+            Transaction History
+          </h1>
+        </div>
+
+        <div
+          class="flex items-center justify-end gap-3 md:gap-5 flex-1 min-w-0"
+        >
+          <button
+            class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary hidden sm:flex items-center justify-center shrink-0"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <button
+            class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary flex items-center justify-center relative shrink-0"
+          >
+            <i class="fa-regular fa-bell"></i>
+            <span
+              class="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full border border-white"
+            ></span>
+          </button>
+
+          <div class="pl-2 flex items-center gap-3 shrink-0">
+            <div
+              class="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-gray-200"
+            >
+              <img
+                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                alt="Profile"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="hidden md:flex items-center gap-2 cursor-pointer">
+              <span class="font-semibold text-dark truncate max-w-[120px]"
+                >Thomas Smith</span
+              >
+              <i class="fa-solid fa-chevron-down text-xs text-muted"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto px-4 md:px-10 pb-4 md:pb-10">
+        <div class="xl:hidden flex flex-col gap-6 mb-8">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div
+              class="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm"
+            >
+              <div
+                class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white shrink-0"
+              >
+                <i class="fa-solid fa-dollar-sign"></i>
+              </div>
+              <div>
+                <p class="text-muted text-xs font-medium">Total balance</p>
+                <p class="text-dark font-bold text-lg">$57,800.75</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm"
+            >
+              <div
+                class="w-10 h-10 bg-white border-2 border-dark rounded-full flex items-center justify-center text-dark shrink-0"
+              >
+                <i class="fa-solid fa-arrow-turn-down"></i>
+              </div>
+              <div>
+                <p class="text-muted text-xs font-medium">Total Due</p>
+                <p class="text-dark font-bold text-lg">$573.67</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm"
+            >
+              <div
+                class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-dark shrink-0"
+              >
+                <i class="fa-solid fa-chart-pie"></i>
+              </div>
+              <div>
+                <p class="text-muted text-xs font-medium">Total Investment</p>
+                <p class="text-dark font-bold text-lg">$8,700.65</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm"
+          >
+            <h3 class="font-bold text-dark text-lg mb-4">Accounts</h3>
+            <div class="space-y-4">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+                />
+                <span class="text-sm font-medium text-dark"
+                  >Include All Accounts</span
+                >
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+                />
+                <span class="text-sm text-muted">Savings Account (**86)</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+                />
+                <span class="text-sm text-muted">Chequing Account (**18)</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+                />
+                <span class="text-sm text-muted"
+                  >Tax-Free Saving Account (**78)</span
+                >
+              </label>
+            </div>
+          </div>
+
+          <div class="w-full max-w-md mx-auto">
+            <div
+              class="w-full h-48 bg-gradient-to-br from-gray-700 to-black rounded-2xl p-6 text-white flex flex-col justify-between relative shadow-xl"
+            >
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-xs text-gray-300 mb-1">Current balance</p>
+                  <p class="text-xl font-medium">$2,300.00</p>
+                </div>
+                <div class="flex flex-col items-end">
+                  <i class="fa-brands fa-cc-mastercard text-4xl opacity-80"></i>
+                </div>
+              </div>
+              <div class="flex justify-between items-end">
+                <p class="text-sm tracking-widest font-mono">
+                  **** **** **** 1289
+                </p>
+                <p class="text-xs text-gray-300">09/26</p>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-4 px-1">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-4 h-4 rounded accent-tertiary"
+                />
+                <span class="text-xs text-muted">Include this Card</span>
+              </label>
+              <div class="flex items-center gap-2 text-xs text-muted">
+                <i
+                  class="fa-solid fa-chevron-left cursor-pointer hover:text-dark"
+                ></i>
+                <span>1 / 2</span>
+                <i
+                  class="fa-solid fa-chevron-right cursor-pointer hover:text-dark"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-[20px] p-4 md:p-8 shadow-sm min-h-full flex flex-col"
+        >
+          <div
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8"
+          >
+            <h2 class="text-lg font-bold text-dark hidden md:block">
+              Transactions
+            </h2>
+
+            <div class="w-full md:flex-1 md:w-auto md:mx-8 relative">
+              <input
+                type="text"
+                placeholder="Search transactions..."
+                class="w-full border border-gray-200 rounded-full py-3 pl-5 pr-12 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white"
+              />
+              <i
+                class="fa-solid fa-magnifying-glass absolute right-5 top-3.5 text-gray-400"
+              ></i>
+            </div>
+          </div>
+
+          <div
+            class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-4 mb-6 gap-4"
+          >
+            <div
+              class="flex gap-2 sm:gap-6 w-full sm:w-auto overflow-x-auto no-scrollbar"
+            >
+              <button
+                class="px-6 py-2 bg-[var(--color-secondary)] text-[var(--color-secondary-text)] font-semibold rounded-lg text-sm whitespace-nowrap"
+              >
+                Recent
+              </button>
+              <button
+                class="px-6 py-2 text-muted font-medium text-sm hover:text-dark whitespace-nowrap"
+              >
+                History
+              </button>
+            </div>
+            <button
+              class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 border border-gray-200 rounded-full text-muted text-sm hover:border-primary hover:text-primary transition"
+            >
+              <i class="fa-solid fa-filter"></i>
+              <span>Filter Dates</span>
+            </button>
+          </div>
+
+          <div class="flex-1 overflow-y-auto">
+            <div class="mb-2">
+              <p
+                class="text-xs text-muted mb-4 font-medium sticky top-0 bg-white py-2"
+              >
+                24 Nov
+              </p>
+
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">
+                      Bi-Weekly Payroll
+                    </p>
+                    <p class="text-xs text-muted truncate">
+                      Conestoga College Student Inc.
+                    </p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Savings Account</p>
+                  <p>24 Nov 2025 at 7:30 PM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-green-100 rounded-lg items-center justify-center text-success rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-up"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      +$3,400
+                    </p>
+                    <p class="text-xs text-muted font-medium">$7,800.20</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">
+                      Province Payment
+                    </p>
+                    <p class="text-xs text-muted truncate">
+                      Government of Canada
+                    </p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Chequing Account</p>
+                  <p>24 Nov 2025 at 5:12 PM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-green-100 rounded-lg items-center justify-center text-success rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-up"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">+$78</p>
+                    <p class="text-xs text-muted font-medium">$44,400.20</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-mug-hot"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">Tim Hortons</p>
+                    <p class="text-xs text-muted truncate">
+                      Kitchener, Ontario
+                    </p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Debit Card</p>
+                  <p>24 Nov 2025 at 8:33 AM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-red-100 rounded-lg items-center justify-center text-danger rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      -$17.79
+                    </p>
+                    <p class="text-xs text-muted font-medium">$44,304.41</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 mb-2">
+              <p
+                class="text-xs text-muted mb-4 font-medium sticky top-0 bg-white py-2"
+              >
+                22 Nov
+              </p>
+
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-dollar-sign"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">Starbucks</p>
+                    <p class="text-xs text-muted truncate">Waterloo, Ontario</p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Credit Card</p>
+                  <p>22 Nov 2025 at 9:00 AM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-red-100 rounded-lg items-center justify-center text-danger rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      -$27.99
+                    </p>
+                    <p class="text-xs text-muted font-medium">$2,300.00</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">
+                      Walmart Supercentre
+                    </p>
+                    <p class="text-xs text-muted truncate">
+                      Kitchener, Ontario
+                    </p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Debit Card</p>
+                  <p>22 Nov 2025 at 4:30 PM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-red-100 rounded-lg items-center justify-center text-danger rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      -$142.50
+                    </p>
+                    <p class="text-xs text-muted font-medium">$2,157.50</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 mb-2">
+              <p
+                class="text-xs text-muted mb-4 font-medium sticky top-0 bg-white py-2"
+              >
+                20 Nov
+              </p>
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-mobile-screen"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">Rogers Bill</p>
+                    <p class="text-xs text-muted truncate">
+                      Pre-Authorized Debit
+                    </p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Chequing Account</p>
+                  <p>20 Nov 2025 at 12:00 AM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-red-100 rounded-lg items-center justify-center text-danger rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      -$85.00
+                    </p>
+                    <p class="text-xs text-muted font-medium">$44,315.20</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-brands fa-spotify"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">
+                      Spotify Premium
+                    </p>
+                    <p class="text-xs text-muted truncate">Digital Purchase</p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Credit Card</p>
+                  <p>20 Nov 2025 at 10:00 AM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-red-100 rounded-lg items-center justify-center text-danger rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      -$10.99
+                    </p>
+                    <p class="text-xs text-muted font-medium">$2,146.51</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 rounded-lg transition"
+              >
+                <div
+                  class="flex items-center gap-3 md:gap-4 w-full md:w-1/3 overflow-hidden"
+                >
+                  <div
+                    class="w-10 h-10 shrink-0 rounded-full border border-gray-200 flex items-center justify-center text-muted"
+                  >
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                  </div>
+                  <div class="truncate">
+                    <p class="font-semibold text-dark truncate">
+                      Interact E-transfer
+                    </p>
+                    <p class="text-xs text-muted truncate">
+                      Received from John Doe
+                    </p>
+                  </div>
+                </div>
+                <div class="hidden md:block w-1/4 text-muted text-xs">
+                  <p class="font-medium text-dark">Savings Account</p>
+                  <p>20 Nov 2025 at 2:15 PM</p>
+                </div>
+                <div
+                  class="flex items-center justify-end gap-2 md:gap-6 flex-1 pl-2"
+                >
+                  <div
+                    class="hidden md:flex w-8 h-8 bg-green-100 rounded-lg items-center justify-center text-success rotate-45"
+                  >
+                    <i class="fa-solid fa-arrow-up"></i>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-dark text-base md:text-lg">
+                      +$50.00
+                    </p>
+                    <p class="text-xs text-muted font-medium">$7,850.20</p>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-right text-gray-300 hidden sm:block ml-2"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 flex justify-center pb-4">
+              <button
+                class="w-full sm:w-auto bg-[var(--color-secondary)] text-[var(--color-secondary-text)] font-semibold py-3 px-8 rounded-xl text-sm hover:opacity-90 transition"
+              >
+                Load More Transactions
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside
+      class="w-96 bg-white border-l border-gray-100 p-8 overflow-y-auto hidden xl:block shadow-sm z-10 h-full shrink-0"
+    >
+      <div class="space-y-4 mb-10">
+        <div
+          class="border border-gray-200 rounded-2xl p-5 flex items-center gap-5"
+        >
+          <div
+            class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white text-lg"
+          >
+            <i class="fa-solid fa-dollar-sign"></i>
+          </div>
+          <div>
+            <p class="text-muted text-xs font-medium">Total balance</p>
+            <p class="text-dark font-bold text-xl">$57,800.75</p>
+          </div>
+        </div>
+
+        <div
+          class="border border-gray-200 rounded-2xl p-5 flex items-center gap-5"
+        >
+          <div
+            class="w-10 h-10 bg-white border-2 border-dark rounded-full flex items-center justify-center text-dark text-lg"
+          >
+            <i class="fa-solid fa-arrow-turn-down"></i>
+          </div>
+          <div>
+            <p class="text-muted text-xs font-medium">Total Due</p>
+            <p class="text-dark font-bold text-xl">$573.67</p>
+          </div>
+        </div>
+
+        <div
+          class="border border-gray-200 rounded-2xl p-5 flex items-center gap-5"
+        >
+          <div
+            class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-dark text-lg"
+          >
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <div>
+            <p class="text-muted text-xs font-medium">Total Investment</p>
+            <p class="text-dark font-bold text-xl">$8,700.65</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-10">
+        <h3 class="font-bold text-dark text-lg mb-6">Accounts</h3>
+        <div class="space-y-5">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked
+              class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+            />
+            <span class="text-sm font-medium text-dark"
+              >Include All Accounts</span
+            >
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked
+              class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+            />
+            <span class="text-sm text-muted">Savings Account (**86)</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked
+              class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+            />
+            <span class="text-sm text-muted">Chequing Account (**18)</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked
+              class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-tertiary custom-checkbox accent-tertiary"
+            />
+            <span class="text-sm text-muted"
+              >Tax-Free Saving Account (**78)</span
+            >
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-dark text-lg mb-6">Cards</h3>
+
+        <div
+          class="w-full h-48 bg-gradient-to-br from-gray-700 to-black rounded-2xl p-6 text-white flex flex-col justify-between relative shadow-xl"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs text-gray-300 mb-1">Current balance</p>
+              <p class="text-xl font-medium">$2,300.00</p>
+            </div>
+            <div class="flex flex-col items-end">
+              <i class="fa-brands fa-cc-mastercard text-4xl opacity-80"></i>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-end">
+            <p class="text-sm tracking-widest font-mono">**** **** **** 1289</p>
+            <p class="text-xs text-gray-300">09/26</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mt-3 mb-8">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked
+              class="w-4 h-4 rounded accent-tertiary"
+            />
+            <span class="text-xs text-muted">Include this Card</span>
+          </label>
+          <div class="flex items-center gap-2 text-xs text-muted">
+            <i
+              class="fa-solid fa-chevron-left cursor-pointer hover:text-dark"
+            ></i>
+            <span>1 / 2</span>
+            <i
+              class="fa-solid fa-chevron-right cursor-pointer hover:text-dark"
+            ></i>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button
+            class="w-full bg-tertiary text-white font-semibold py-3 px-8 rounded-xl text-sm hover:opacity-90 transition"
+          >
+            Apply Changes
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <script>
+      function toggleMenu() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("mobile-overlay");
+
+        if (sidebar.classList.contains("-translate-x-full")) {
+          sidebar.classList.remove("-translate-x-full");
+          overlay.classList.remove("hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          overlay.classList.add("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>
