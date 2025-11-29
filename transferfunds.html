@@ -231,6 +231,70 @@
   </div>
 </main>
 
+<aside class="w-80 bg-white border-l border-gray-100 hidden xl:flex flex-col shrink-0 z-10 overflow-y-auto">
+  <div class="p-6 border-b border-gray-100">
+    <h3 class="font-bold text-dark mb-4">Transfer History</h3>
+  </div>
+  <div class="flex-1 p-6 space-y-4">
+    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+      <div class="flex flex-col mb-2">
+        <h2 class="font-bold text-xl text-dark mb-4">Today</h3>
+
+          <span class="text-sm text-muted mb-2">November 30th, 2025, 11:23am</span>
+          <span class="text-sm text-dark">$20.00 from Chequing to Sandra Williams</span>
+      </div>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+      <div class="flex flex-col mb-2">
+        <h2 class="font-bold text-xl text-dark mb-4">Yesterday</h3>
+
+          <span class="text-sm text-muted mb-2">November 29th, 2025, 3:46pm</span>
+          <span class="text-sm text-dark mb-4">$12.98 from Chequing to Tony Mendes</span>
+
+          <span class="text-sm text-muted mb-2">November 29th, 2025, 2:02pm</span>
+          <span class="text-sm text-dark">$87.24 from Chequing to Barry Reynolds</span>
+      </div>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+      <div class="flex flex-col mb-2">
+        <h2 class="font-bold text-xl text-dark mb-4">Last Week</h3>
+
+          <span class="text-sm text-muted mb-2">November 27th, 2025, 9:04am</span>
+          <span class="text-sm text-dark mb-4">$3.25 from Chequing to Mary Sanchez</span>
+
+          <span class="text-sm text-muted mb-2">November 24th, 2025, 8:34pm</span>
+          <span class="text-sm text-dark mb-4">$33.84 from Chequing to Sandra Williams</span>
+
+          <span class="text-sm text-muted mb-2">November 23rd, 2025, 8:53am</span>
+          <span class="text-sm text-dark">$2.50 from Chequing to Mary Sanchez</span>
+      </div>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+      <div class="flex flex-col mb-2">
+        <h2 class="font-bold text-xl text-dark mb-4">Earlier this Month</h3>
+
+          <span class="text-sm text-muted mb-2">November 16th, 2025, 3:46pm</span>
+          <span class="text-sm text-dark mb-4">$13.50 from Chequing to Barry Reynolds</span>
+
+          <span class="text-sm text-muted mb-2">November 14th, 2025, 7:00pm</span>
+          <span class="text-sm text-dark mb-4">$5.67 from Chequing to Martha Torres</span>
+
+          <span class="text-sm text-muted mb-2">November 14th, 2025, 11:50am</span>
+          <span class="text-sm text-dark mb-4">$34.80 from Chequing to Barry Reynolds</span>
+
+          <span class="text-sm text-muted mb-2">November 1st, 2025, 2:33pm</span>
+          <span class="text-sm text-dark">$1,200.00 from Savings to Landlord</span>
+      </div>
+    </div>
+
+    <div class="mt-8 flex justify-center pb-4">
+      <button
+        class="w-full sm:w-auto bg-[var(--color-secondary)] text-[var(--color-secondary-text)] font-semibold py-3 px-8 rounded-xl text-sm hover:opacity-90 transition">
+        Load More History
+      </button>
+    </div>
+</aside>
+
     <script>
       function toggleMenu() {
         const sidebar = document.getElementById("sidebar");
