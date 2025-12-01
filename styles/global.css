@@ -1,15 +1,15 @@
 /* global.css */
 :root {
-  --color-primary: #3880df;
-  --color-secondary: #ffe9de;
-  --color-secondary-text: #e2804c;
+  --color-primary: #2563eb;
+  --color-secondary: #fbd6c7;
+  --color-secondary-text: #c05621;
   --color-danger: #ef4444;
   --color-success: #10b981;
   --color-text-main: #4b4b4b;
-  --color-text-muted: #848a93;
+  --color-text-muted: #636b74;
   --color-bg-light: #f3f4f6;
   --color-card-bg: #ffffff;
-  --color-tertiary: #0597a2;
+  --color-tertiary: #047c86;
 }
 
 body {
@@ -34,6 +34,6 @@ body {
 
 /* Custom checkbox override to match the teal color in the sidebar */
 .custom-checkbox:checked {
-  background-color: #2f80ed;
-  border-color: #2f80ed;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
