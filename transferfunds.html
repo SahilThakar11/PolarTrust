@@ -55,6 +55,7 @@
       <button
         onclick="toggleMenu()"
         class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
+        aria-label="Close menu"
       >
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
@@ -124,7 +125,7 @@
 <main class="flex-1 flex flex-col h-full overflow-hidden relative w-full min-w-0">
   <header class="h-20 md:h-24 flex items-center justify-between px-4 md:px-10 py-6 shrink-0 bg-transparent w-full">
     <div class="flex items-center gap-4 shrink-0">
-      <button onclick="toggleMenu()" class="md:hidden text-dark text-xl p-2">
+      <button onclick="toggleMenu()" class="md:hidden text-dark text-xl p-2" aria-label="Open menu">
         <i class="fa-solid fa-bars"></i>
       </button>
       <h1 class="text-xl md:text-2xl font-bold text-dark whitespace-nowrap">
@@ -134,10 +135,12 @@
 
     <div class="flex items-center justify-end gap-3 md:gap-5 flex-1 min-w-0">
       <button
+        aria-label="Search"
         class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary hidden sm:flex items-center justify-center shrink-0">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
       <button
+        aria-label="Notifications"
         class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary flex items-center justify-center relative shrink-0">
         <i class="fa-regular fa-bell"></i>
         <span class="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full border border-white"></span>
@@ -160,7 +163,8 @@
 
       <div class="w-full relative">
         <h3 class="font-bold text-dark mb-2">Amount</h3>
-        <input type="text" placeholder="$0.00"
+        <label for="transfer-amount" class="sr-only">Transfer Amount</label>
+        <input type="text" id="transfer-amount" placeholder="$0.00"
           class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
       </div>
 
@@ -188,7 +192,8 @@
 
       <div class="w-full relative">
         <h3 class="font-bold text-dark mb-2">Memo</h3>
-        <textarea placeholder="Add a Memo (optional)" rows="4"
+        <label for="transfer-memo" class="sr-only">Transfer Memo</label>
+        <textarea id="transfer-memo" placeholder="Add a Memo (optional)" rows="4"
           class="resize-none w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white"></textarea>
       </div>
 
@@ -203,17 +208,20 @@
       <div class="flex flex-col w-full gap-4 px-5 py-5 bg-gray-200 rounded-lg border border-gray-200">
         <div class="w-full relative">
           <h3 class="font-bold text-gray-500 mb-2">Hint</h3>
-          <input type="text" disabled
+          <label for="transfer-hint" class="sr-only">Transfer Hint</label>
+          <input type="text" id="transfer-hint" disabled
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
         </div>
         <div class="w-full relative">
           <h3 class="font-bold text-gray-500 mb-2">Password</h3>
-          <input type="password" placeholder="••••" disabled 
+          <label for="transfer-password" class="sr-only">Transfer Password</label>
+          <input type="password" id="transfer-password" placeholder="••••" disabled 
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
         </div>
         <div class="w-full relative">
           <h3 class="font-bold text-gray-500 mb-2">Confirm Password</h3>
-          <input type="password" placeholder="••••" disabled 
+          <label for="transfer-confirm-password" class="sr-only">Confirm Transfer Password</label>
+          <input type="password" id="transfer-confirm-password" placeholder="••••" disabled 
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
         </div>
       </div>

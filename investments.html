@@ -45,6 +45,7 @@
     <div
       id="mobile-overlay"
       onclick="toggleMenu()"
+      aria-label="Close menu"
       class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden glass transition-opacity"
     ></div>
 
@@ -54,6 +55,7 @@
     >
       <button
         onclick="toggleMenu()"
+        aria-label="Close menu"
         class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
       >
         <i class="fa-solid fa-xmark text-xl"></i>
@@ -127,6 +129,7 @@
         <div class="flex items-center gap-4 shrink-0">
           <button
             onclick="toggleMenu()"
+            aria-label="Open menu"
             class="md:hidden text-dark text-xl p-2"
           >
             <i class="fa-solid fa-bars"></i>
@@ -140,11 +143,13 @@
           class="flex items-center justify-end gap-3 md:gap-5 flex-1 min-w-0"
         >
           <button
+            aria-label="Search"
             class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary hidden sm:flex items-center justify-center shrink-0"
           >
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
           <button
+            aria-label="Notifications"
             class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary flex items-center justify-center relative shrink-0"
           >
             <i class="fa-regular fa-bell"></i>
@@ -423,10 +428,13 @@
             <h2 class="text-lg font-bold text-dark">Investment Activity</h2>
 
             <div class="w-full md:flex-1 md:w-auto md:mx-8 relative">
+              <label for="search-investments" class="sr-only">Search Investments</label>
               <input
                 type="text"
+                id="search-investments"
                 placeholder="Search symbol or company..."
                 class="w-full border border-gray-200 rounded-full py-3 pl-5 pr-12 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white"
+                aria-label="Search Investments"
               />
               <i
                 class="fa-solid fa-magnifying-glass absolute right-5 top-3.5 text-gray-400"
