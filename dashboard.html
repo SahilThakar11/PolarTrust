@@ -57,6 +57,7 @@
     <div
       id="mobile-overlay"
       onclick="toggleMenu()"
+      aria-label="Close menu"
       class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden glass transition-opacity"
     ></div>
 
@@ -66,6 +67,7 @@
     >
       <button
         onclick="toggleMenu()"
+        aria-label="Close menu"
         class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
       >
         <i class="fa-solid fa-xmark text-xl"></i>
@@ -139,6 +141,7 @@
         <div class="flex items-center gap-4 shrink-0">
           <button
             onclick="toggleMenu()"
+            aria-label="Open menu"
             class="md:hidden text-dark text-xl p-2"
           >
             <i class="fa-solid fa-bars"></i>
@@ -176,6 +179,7 @@
           </div>
 
           <button
+            aria-label="Notifications"
             class="w-9 h-9 bg-white rounded-full border border-gray-200 text-muted hover:text-primary flex items-center justify-center relative"
           >
             <i class="fa-regular fa-bell"></i>
