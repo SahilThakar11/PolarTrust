@@ -70,6 +70,7 @@
     >
       <button
         onclick="toggleMenu()"
+        aria-label="Close menu"
         class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
       >
         <i class="fa-solid fa-xmark text-xl"></i>
@@ -142,6 +143,7 @@
       >
         <div class="flex items-center gap-4 shrink-0">
           <button
+            aria-label="Toggle menu"
             onclick="toggleMenu()"
             class="md:hidden text-dark text-xl p-2"
           >
@@ -377,11 +379,13 @@
           <div class="absolute right-2 top-2 bottom-2 flex items-center gap-2">
             <button
               class="w-10 h-10 flex items-center justify-center text-muted hover:text-primary transition rounded-full hover:bg-gray-100"
+              aria-label="Attach file"
             >
               <i class="fa-solid fa-paperclip"></i>
             </button>
             <button
               class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-full hover:bg-blue-600 transition shadow-md shadow-blue-200"
+              aria-label="Send message"
             >
               <i class="fa-solid fa-paper-plane"></i>
             </button>
@@ -398,6 +402,7 @@
           <h3 class="font-bold text-dark text-lg">History</h3>
           <button
             class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-tertiary hover:bg-teal-50 transition"
+            aria-label="Edit history settings"
           >
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
