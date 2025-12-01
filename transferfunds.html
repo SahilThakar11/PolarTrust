@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Polar Trust - Transfer Funds</title>
 
+    <link rel="icon" href="assets/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -54,7 +55,7 @@
     >
       <button
         onclick="toggleMenu()"
-        class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
+        class="absolute top-4 right-4 text-gray-700 md:hidden p-2"
         aria-label="Close menu"
       >
         <i class="fa-solid fa-xmark text-xl"></i>
@@ -162,7 +163,7 @@
     <div class="flex flex-col justify-between items-start gap-4 mb-6">
 
       <div class="w-full relative">
-        <h3 class="font-bold text-dark mb-2">Amount</h3>
+        <h2 class="font-bold text-dark mb-2">Amount</h2>
         <label for="transfer-amount" class="sr-only">Transfer Amount</label>
         <input type="text" id="transfer-amount" placeholder="$0.00"
           class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
@@ -170,8 +171,9 @@
 
       <div class="flex flex-col md:flex-row w-full gap-4">
         <div class="flex-1">
-          <h3 class="w-full font-bold text-dark mb-2">From</h3>
+          <label for="select-account" class="w-full font-bold text-dark mb-2">From</label>
           <select
+          id="select-account"
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white">
             <option selected disabled>Select an Account</option>
             <option>Polar Everyday Chequing Account</option>
@@ -180,8 +182,9 @@
           </select>
         </div>
         <div class="flex-1">
-          <h3 class="w-full font-bold text-dark mb-2">To</h3>
-          <select
+          <label for="select-recipient" class="w-full font-bold text-dark mb-2">To</label>
+          <select 
+          id="select-recipient"
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white">
             <option selected disabled>Select a Recipient</option>
             <option>Daryll Hall</option>
@@ -191,7 +194,7 @@
       </div>
 
       <div class="w-full relative">
-        <h3 class="font-bold text-dark mb-2">Memo</h3>
+        <h2 class="font-bold text-dark mb-2">Memo</h2>
         <label for="transfer-memo" class="sr-only">Transfer Memo</label>
         <textarea id="transfer-memo" placeholder="Add a Memo (optional)" rows="4"
           class="resize-none w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white"></textarea>
@@ -200,26 +203,26 @@
       <hr class="border-t border-gray-200 w-full" />
 
       <label class="inline-flex cursor-pointer">
-        <h3 class="font-bold text-dark ">Use Password</h3>
+        <h2 class="font-bold text-dark ">Use Password</h2>
         <input type="checkbox" value="" class="sr-only peer">
         <div class="relative mx-3 w-9 h-5 bg-gray-300 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-4 after:w-4"></div>
       </label>
 
       <div class="flex flex-col w-full gap-4 px-5 py-5 bg-gray-200 rounded-lg border border-gray-200">
         <div class="w-full relative">
-          <h3 class="font-bold text-gray-500 mb-2">Hint</h3>
+          <h2 class="font-bold text-gray-700 mb-2">Hint</h2>
           <label for="transfer-hint" class="sr-only">Transfer Hint</label>
           <input type="text" id="transfer-hint" disabled
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
         </div>
         <div class="w-full relative">
-          <h3 class="font-bold text-gray-500 mb-2">Password</h3>
+          <h2 class="font-bold text-gray-700 mb-2">Password</h2>
           <label for="transfer-password" class="sr-only">Transfer Password</label>
           <input type="password" id="transfer-password" placeholder="••••" disabled 
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
         </div>
         <div class="w-full relative">
-          <h3 class="font-bold text-gray-500 mb-2">Confirm Password</h3>
+          <h2 class="font-bold text-gray-700 mb-2">Confirm Password</h2>
           <label for="transfer-confirm-password" class="sr-only">Confirm Transfer Password</label>
           <input type="password" id="transfer-confirm-password" placeholder="••••" disabled 
             class="w-full border border-gray-200 rounded-md py-3 px-5 focus:outline-none focus:border-primary text-sm bg-gray-50 md:bg-white" />
@@ -243,12 +246,12 @@
 
 <aside class="w-80 bg-white border-l border-gray-100 hidden xl:flex flex-col shrink-0 z-10 overflow-y-auto">
   <div class="p-6 border-b border-gray-100">
-    <h3 class="font-bold text-dark mb-4">Transfer History</h3>
+    <h2 class="font-bold text-dark mb-4">Transfer History</h2>
   </div>
   <div class="flex-1 p-6 space-y-4">
     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
       <div class="flex flex-col mb-2">
-        <h2 class="font-bold text-xl text-dark mb-4">Today</h3>
+        <h2 class="font-bold text-xl text-dark mb-4">Today</h2>
 
           <span class="text-sm text-muted mb-2">November 30th, 2025, 11:23am</span>
           <span class="text-sm text-dark">$20.00 from Chequing to Sandra Williams</span>
@@ -256,7 +259,7 @@
     </div>
     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
       <div class="flex flex-col mb-2">
-        <h2 class="font-bold text-xl text-dark mb-4">Yesterday</h3>
+        <h2 class="font-bold text-xl text-dark mb-4">Yesterday</h2>
 
           <span class="text-sm text-muted mb-2">November 29th, 2025, 3:46pm</span>
           <span class="text-sm text-dark mb-4">$12.98 from Chequing to Tony Mendes</span>
@@ -267,7 +270,7 @@
     </div>
     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
       <div class="flex flex-col mb-2">
-        <h2 class="font-bold text-xl text-dark mb-4">Last Week</h3>
+        <h2 class="font-bold text-xl text-dark mb-4">Last Week</h2>
 
           <span class="text-sm text-muted mb-2">November 27th, 2025, 9:04am</span>
           <span class="text-sm text-dark mb-4">$3.25 from Chequing to Mary Sanchez</span>
@@ -281,7 +284,7 @@
     </div>
     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
       <div class="flex flex-col mb-2">
-        <h2 class="font-bold text-xl text-dark mb-4">Earlier this Month</h3>
+        <h2 class="font-bold text-xl text-dark mb-4">Earlier this Month</h2>
 
           <span class="text-sm text-muted mb-2">November 16th, 2025, 3:46pm</span>
           <span class="text-sm text-dark mb-4">$13.50 from Chequing to Barry Reynolds</span>

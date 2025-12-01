@@ -1,15 +1,16 @@
 /* global.css */
 :root {
-  --color-primary: #3880df;
-  --color-secondary: #ffe9de;
-  --color-secondary-text: #e2804c;
-  --color-danger: #ef4444;
-  --color-success: #10b981;
+  --color-primary: #1b63c2;
+  --color-secondary: #fff5f1;
+  --color-secondary-text: #a85222;
+  --color-danger: #ba4747;
+  --color-success: #065f46;
   --color-text-main: #4b4b4b;
-  --color-text-muted: #848a93;
+  --color-text-muted: #646464;
   --color-bg-light: #f3f4f6;
   --color-card-bg: #ffffff;
-  --color-tertiary: #0597a2;
+  --color-tertiary: #04767e;
+  --color-success-bg: #dcfce7;
 }
 
 body {

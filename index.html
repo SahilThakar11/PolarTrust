@@ -26,11 +26,11 @@
               sans: ["Inter", "sans-serif"],
             },
             colors: {
-              primary: "#2F80ED",
+              primary: "var(--color-primary, #1b63c2)",
               dark: "#333333",
-              muted: "#828282",
-              "brand-bg": "#F7F9FC", // Light background for the page
-              "input-bg": "#E8F0FE", // Specific light blue for inputs seen in mockup
+              muted: "#5c5c5c",
+              "brand-bg": "#F7F9FC",
+              "input-bg": "#E8F0FE",
             },
           },
         },
@@ -96,7 +96,9 @@
           </div>
 
           <div class="space-y-1">
-            <label for="password" class="text-xs font-bold text-dark ml-1">Password</label>
+            <label for="password" class="text-xs font-bold text-dark ml-1"
+              >Password</label
+            >
             <div class="relative">
               <input
                 type="password"
