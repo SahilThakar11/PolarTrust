@@ -55,6 +55,7 @@
       <button
         onclick="toggleMenu()"
         class="absolute top-4 right-4 text-gray-500 md:hidden p-2"
+        aria-label="Close menu"
       >
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
@@ -124,7 +125,7 @@
 <main class="flex-1 flex flex-col h-full overflow-hidden relative w-full min-w-0">
   <header class="h-20 md:h-24 flex items-center justify-between px-4 md:px-10 py-6 shrink-0 bg-transparent w-full">
     <div class="flex items-center gap-4 shrink-0">
-      <button onclick="toggleMenu()" class="md:hidden text-dark text-xl p-2">
+      <button onclick="toggleMenu()" class="md:hidden text-dark text-xl p-2" aria-label="Open menu">
         <i class="fa-solid fa-bars"></i>
       </button>
       <h1 class="text-xl md:text-2xl font-bold text-dark whitespace-nowrap">
@@ -134,10 +135,12 @@
 
     <div class="flex items-center justify-end gap-3 md:gap-5 flex-1 min-w-0">
       <button
+        aria-label="Search"
         class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary hidden sm:flex items-center justify-center shrink-0">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
       <button
+        aria-label="Notifications"
         class="w-10 h-10 bg-white rounded-full border border-gray-200 text-muted hover:text-primary flex items-center justify-center relative shrink-0">
         <i class="fa-regular fa-bell"></i>
         <span class="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full border border-white"></span>
